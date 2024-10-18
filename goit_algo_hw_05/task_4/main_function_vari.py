@@ -3,67 +3,76 @@ def input_error(expected_args):
         def wrapper(phone_book, args):
             if expected_args == 0:
                 return func(phone_book, args)
-            
+
             if len(args) == 0:
-                return 'Please enter arguments for the command'
+                return "Please enter arguments for the command"
 
             if len(args) != expected_args:
-                return f'Command expected {expected_args} arguments'
-            
+                return f"Command expected {expected_args} arguments"
+
             return func(phone_book, args)
+
         return wrapper
+
     return decorator
 
-def parse_input(user_input:str):
+
+def parse_input(user_input: str):
     if not user_input.strip():
-        return '',[]
+        return "", []
     cmd, *args = user_input.split()
     cmd = cmd.strip().lower()
     return cmd, *args
 
+
 @input_error(2)
 def add_contact(phone_book, args):
-    name,phone = args
+    name, phone = args
     phone_book[name] = phone
-    return 'Contact added.'
+    return "Contact added."
+
 
 @input_error(2)
 def change_contact(phone_book, args):
-    name,phone = args
+    name, phone = args
     if name in phone_book:
         phone_book[name] = phone
-        return 'Contact changed.'
+        return "Contact changed."
     else:
-        return'Contact not found.'
+        return "Contact not found."
+
 
 @input_error(1)
 def delete_contact(phone_book, args):
     name = args[0]
     if name in phone_book:
         del phone_book[name]
-        return 'Contact deleted.'
+        return "Contact deleted."
     else:
-        return 'Contact not found.'
+        return "Contact not found."
+
 
 @input_error(1)
 def show_phone(phone_book, args):
     name = args[0]
     if name in phone_book:
-        return f'{phone_book[name]}'
+        return f"{phone_book[name]}"
     else:
-        return 'Contact not found.'
+        return "Contact not found."
 
 
 def greting():
-    return 'Hello, how can I help you?'
+    return "Hello, how can I help you?"
+
 
 @input_error(0)
-def show_all(phone_book,args):
-    if  phone_book:
+def show_all(phone_book, args):
+    if phone_book:
         for name, phone in phone_book.items():
-            print(f'{name}: {phone}')
+            print(f"{name}: {phone}")
     else:
-        print('No contacts found.')
+        print("No contacts found.")
+
 
 def show_command():
     help_text = (
@@ -79,33 +88,34 @@ def show_command():
     )
     print(help_text)
 
+
 def main():
     phone_book = {}
     while True:
-        user_input = input('Enter a command: ').strip()
+        user_input = input("Enter a command: ").strip()
         cmd, *args = parse_input(user_input)
 
-        if cmd == 'add':
+        if cmd == "add":
             print(add_contact(phone_book, args))
-        elif cmd == 'change':
+        elif cmd == "change":
             print(change_contact(phone_book, args))
-        elif cmd == 'phone':
+        elif cmd == "phone":
             print(show_phone(phone_book, args))
-        elif cmd == 'all':
-            show_all(phone_book,[])
-        elif cmd == 'help':
+        elif cmd == "all":
+            show_all(phone_book, [])
+        elif cmd == "help":
             show_command()
-        elif cmd == 'del':
+        elif cmd == "del":
             print(delete_contact(phone_book, args))
-        elif cmd == 'hello':
+        elif cmd == "hello":
             print(greting())
-        elif cmd in ['close', 'exit']:
-            print('Goodbye!')
+        elif cmd in ["close", "exit"]:
+            print("Goodbye!")
             break
         else:
             print('Invalid command. Type "help" for a list of available commands.')
-            
-if __name__ == '__main__':
-    print('Welcome to the CLI assistant')
-    main()
 
+
+if __name__ == "__main__":
+    print("Welcome to the CLI assistant")
+    main()
